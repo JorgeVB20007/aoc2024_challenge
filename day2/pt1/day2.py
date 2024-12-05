@@ -3,6 +3,7 @@
 
 file = open("day2/input.txt", "r")
 text = file.read()
+file.close()
 
 lines = text.split("\n")
 result = 0

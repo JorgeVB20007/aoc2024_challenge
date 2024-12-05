@@ -4,6 +4,8 @@
 
 file = open("input.txt", "r")
 text = file.read()
+file.close()
+
 rows = text.split("\n")
 columns = [[], []]
 for row in rows:
