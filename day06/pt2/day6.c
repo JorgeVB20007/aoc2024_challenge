@@ -278,7 +278,7 @@ static int advance_one(char **matrix, int *x, int *y, int *direction)
 
 int main()
 {
-	int	fd = open("day6/input.txt", O_RDONLY);
+	int	fd = open("day06/input.txt", O_RDONLY);
 	char *buff = calloc(101, 1);
 	char *full_text = malloc(1);
 	unsigned int	cumulative_size = 0;

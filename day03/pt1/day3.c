@@ -8,7 +8,7 @@
 int main()
 {
 	char			*buf = calloc(101, sizeof(char));
-	int				fd = open("day3/input.txt", O_RDONLY);
+	int				fd = open("day03/input.txt", O_RDONLY);
 	char			*full_input = malloc(0);
 	unsigned long	result = 0;
 

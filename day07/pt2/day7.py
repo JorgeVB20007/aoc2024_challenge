@@ -27,7 +27,7 @@ def join_when_required(lines_items: list, attempt: str) -> list:
 
 
 
-file = open("day7/input.txt", "r")
+file = open("day07/input.txt", "r")
 text = file.read()
 file.close()
 

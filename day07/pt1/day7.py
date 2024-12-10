@@ -1,6 +1,6 @@
 import math
 
-file = open("day7/input.txt", "r")
+file = open("day07/input.txt", "r")
 text = file.read()
 file.close()
 

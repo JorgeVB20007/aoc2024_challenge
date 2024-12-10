@@ -71,7 +71,7 @@ int is_sorted(t_item *items)
 
 int main()
 {
-	int	fd = open("day9/input.txt", O_RDONLY);
+	int	fd = open("day09/input.txt", O_RDONLY);
 	char *buff = calloc(101, 1);
 	char *full_text = malloc(0);
 	unsigned int	cumulative_size = 0;

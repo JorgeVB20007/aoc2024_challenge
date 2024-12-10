@@ -104,7 +104,7 @@ static int	get_xmas(char **matrix)
 
 int main()
 {
-	int	fd = open("day4/input.txt", O_RDONLY);
+	int	fd = open("day04/input.txt", O_RDONLY);
 	char *buff = calloc(101, 1);
 	char *full_text = malloc(0);
 	unsigned int	cumulative_size = 0;

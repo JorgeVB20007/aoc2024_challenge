@@ -249,7 +249,7 @@ int count_antinodes(Tile *map)
 }
 
 int main() {
-	std::string input_text = read_file("day8/input.txt");
+	std::string input_text = read_file("day08/input.txt");
 	Tile *map = create_map(input_text);
 
 	set_antinodes(map);

@@ -1,7 +1,7 @@
 
 
 
-file = open("day2/input.txt", "r")
+file = open("day02/input.txt", "r")
 text = file.read()
 file.close()
 
