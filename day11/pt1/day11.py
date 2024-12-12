@@ -2,35 +2,47 @@ file = open("day11/input.txt", "r")
 text = file.read()
 file.close()
 
-stones = text.split(" ")
-stoneslist = []
+stones = {}
+for stone in text.split(" "):
+	if int(stone) in stones:
+		stones[int(stone)] += 1
+	else:
+		stones[int(stone)] = 1
 
-for tolist in stones:
-	stoneslist.append([tolist])
+times = 25
 
-print(stoneslist)
-
-times = 75
-
-while times > 0:
-	for stone in stoneslist:
-		if (int(stone[0]) == 0):
-			stone[0] = '1'
-		elif len(stone[0]) % 2 == 0:
-			half = int(len(stone[0]) / 2)
-			stone.append(str(int(stone[0][half:])))
-			stone[0] = str(int(stone[0][:half]))
+while (times > 0):
+	stones_next = {}
+	if 0 in stones:
+		stones_next[1] = stones[0]
+	for idx in stones:
+		length = int(len(str(idx)))
+		if idx == 0:
+			continue
+		elif length % 2 == 0:
+			first = int(str(idx)[: int(length / 2)])
+			second = int(str(idx)[int(length / 2) :])
+			if first in stones_next:
+				stones_next[first] += stones[idx]
+			else:
+				stones_next[first] = stones[idx]
+			if second in stones_next:
+				stones_next[second] += stones[idx]
+			else:
+				stones_next[second] = stones[idx]
 		else:
-			stone[0] = str(int(stone[0]) * 2024)
-	newlist = []
-	for stone in stoneslist:
-		for substone in stone:
-			newlist.append([substone])
-	stoneslist = newlist
-	print(times)
+			if int(idx * 2024) in stones_next:
+				stones_next[int(idx * 2024)] += stones[idx]
+			else:
+				stones_next[int(idx * 2024)] = stones[idx]
+
+	stones = stones_next
 	times -= 1
 
+result = 0
 
-# print(stoneslist)
+for idx in stones:
+	result += stones[idx]
 
-print(">>>", len(stoneslist))
+
+print(">>>", result)
