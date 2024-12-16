@@ -293,9 +293,9 @@ void explore(Tile *map, Tile *current, Tile *end)
 void fck_go_back(Tile *loc, Tile *end, int coming_from)
 {
 	int bestscore = loc->best_score_coming_from(coming_from);
-	loc->viewable = true;
 	if (loc == end)
 		return ;
+	bool found = false;
 	for (int dir = 0; dir < 4; dir++)
 	{
 		if (loc->visits[dir] && loc->visits[dir].score <= bestscore)
@@ -308,13 +308,17 @@ void fck_go_back(Tile *loc, Tile *end, int coming_from)
 				fck_go_back(loc->north, end, SOUTH);
 			else if (dir == WEST)
 				fck_go_back(loc->east, end, WEST);
+			found = true;
 		}
 	}
+	if (found)
+		loc->viewable = true;
+
 }
 
 int main()
 {
-	std::string full_text = read_file("day16/input3.txt");
+	std::string full_text = read_file("day16/input.txt");
 
 	Tile *loc = NULL;
 	Tile *end = NULL;
@@ -322,13 +326,10 @@ int main()
 
 	explore(map, loc, end);
 
-	print(map, loc, end);
-
-
 	int result = 0;
 
 	fck_go_back(end, loc, NORTH);
-	print(map, loc, end);
+	// print(map, loc, end);
 
 	for (Tile *it = map; it; it = it->it_next)
 	{
