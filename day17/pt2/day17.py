@@ -6,19 +6,12 @@ file.close()
 
 all_lines = text.split('\n')
 
-print(all_lines)
 reg_a = int(all_lines[0][12:])
 reg_b = int(all_lines[1][12:])
 reg_c = int(all_lines[2][12:])
-output = ""
+output = []
 
-program_str = all_lines[4][9:]
 program = [int(x) for x in all_lines[4][9:].split(',')]
-
-print(reg_a)
-print(reg_b)
-print(reg_c)
-print(program)
 
 def adv(reg_a, combo):
 	return int(reg_a / (math.pow(2, combo)))
@@ -57,60 +50,58 @@ def get_combo_value(combo):
 		literal = reg_c
 	return literal
 
-init_reg_a = 16700000
+result = 0
+is_first = True
 
-while output != program_str:
-	output = ""
-	init_reg_a += 1
-	reg_a = init_reg_a
-	idx = 0
-	while (idx < len(program)):
-		# print("idx:", idx, "| ins:", program[idx])
-		if program[idx] == 0:		#? adv
-			literal = get_combo_value(program[idx + 1])
-			reg_a = adv(reg_a, literal)
-			idx += 2
-		elif program[idx] == 1:		#? bxl
-			reg_b = bxl(reg_b, program[idx + 1])
-			idx += 2
-		elif program[idx] == 2:		#? bst
-			reg_b = bst(get_combo_value(program[idx + 1]))
-			idx += 2
-		elif program[idx] == 3:		#? jnz
-			if jnz(reg_a, program[idx + 1]) >= 0:
-				idx = jnz(reg_a, program[idx + 1])
-			else:
+for currprogram_idx in range(1, len(program) + 1):
+	currprogram = program[-currprogram_idx:]
+	for currnum in range(0, 9):
+		output = []
+		if is_first:
+			currnum += 3
+		reg_a = currnum + result * 8
+		reg_b = 0
+		reg_c = 0
+		idx = 0
+		is_first = False
+		while (idx < len(program)):
+			if program[idx] == 0:		#? adv
+				literal = get_combo_value(program[idx + 1])
+				reg_a = adv(reg_a, literal)
 				idx += 2
-		elif program[idx] == 4:		#? bxc
-			reg_b = bxc(reg_b, reg_c)
-			idx += 2
-		elif program[idx] == 5:		#? out
-			literal = get_combo_value(program[idx + 1])
-			if len(output) > 0:
-				output = output + ','
-			output = output + str(out(literal))
-			idx += 2
-			if output != program_str[:len(output)]:
-				break
-		elif program[idx] == 6:		#? bdv
-			literal = get_combo_value(program[idx + 1])
-			reg_b = bdv(reg_a, literal)
-			idx += 2
-		elif program[idx] == 7:		#? cdv
-			literal = get_combo_value(program[idx + 1])
-			reg_c = bdv(reg_a, literal)
-			idx += 2
-		# print("A:", reg_a, "| B:", reg_b, "| C:", reg_c, "| OUT:", output)
-		if (len(output) > len(program_str)):
+			elif program[idx] == 1:		#? bxl
+				reg_b = bxl(reg_b, program[idx + 1])
+				idx += 2
+			elif program[idx] == 2:		#? bst
+				reg_b = bst(get_combo_value(program[idx + 1]))
+				idx += 2
+			elif program[idx] == 3:		#? jnz
+				if jnz(reg_a, program[idx + 1]) >= 0:
+					idx = jnz(reg_a, program[idx + 1])
+				else:
+					idx += 2
+					break
+			elif program[idx] == 4:		#? bxc
+				reg_b = bxc(reg_b, reg_c)
+				idx += 2
+			elif program[idx] == 5:		#? out
+				literal = get_combo_value(program[idx + 1])
+				output.append(out(literal))
+				idx += 2
+			elif program[idx] == 6:		#? bdv
+				literal = get_combo_value(program[idx + 1])
+				reg_b = bdv(reg_a, literal)
+				idx += 2
+			elif program[idx] == 7:		#? cdv
+				literal = get_combo_value(program[idx + 1])
+				reg_c = bdv(reg_a, literal)
+				idx += 2
+		if (currprogram == output):
+			result = result * 8 + currnum
 			break
-			
 
-	# print(">", output)
-	if (not init_reg_a % 1_000_000):
-		print(init_reg_a)
 
-print(">>>", init_reg_a)
-
+print(">>>", result)
 
 
 
