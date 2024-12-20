@@ -10,7 +10,6 @@ patterns = text_parsing[1].split('\n')
 
 
 def try_pattern(attempt: str, pattern: str) -> bool:
-	# print(">", attempt, "/", pattern)
 	if len(attempt) > len(pattern) or (len(attempt) == len(pattern) and attempt != pattern):
 		return False
 	elif attempt != pattern[:len(attempt)]:

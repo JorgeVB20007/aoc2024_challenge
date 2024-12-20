@@ -1,4 +1,4 @@
-file = open("day19/input3.txt", "r")
+file = open("day19/input.txt", "r")
 text = file.read()
 file.close()
 
@@ -8,29 +8,43 @@ towels = text_parsing[0].split(", ")
 patterns = text_parsing[1].split('\n')
 
 
-
-def try_pattern(attempt: str, pattern: str, attempt_lst: list) -> int:
-	# print(">", attempt, "/", pattern)
-	working_patterns = 0
+def try_pattern(attempt: str, pattern: str) -> bool:
 	if len(attempt) > len(pattern) or (len(attempt) == len(pattern) and attempt != pattern):
-		return 0
+		return False
 	elif attempt != pattern[:len(attempt)]:
-		return 0
+		return False
 	elif attempt == pattern:
-		return 1
+		return True
 	for towel in towels:
-		listed_attempt = attempt_lst.copy()
-		listed_attempt.append(towel)
-		pattern_tried = try_pattern(attempt + towel, pattern, listed_attempt)
-		if pattern_tried > 0:
-			working_patterns += pattern_tried
-	print(working_patterns, attempt_lst)
-	return working_patterns
+		if try_pattern(attempt + towel, pattern):
+			return True
+	return False
+
+
 
 result = 0
 for pattern in patterns:
-	result += try_pattern("", pattern, [])
-	print(result)
+	if (not try_pattern("", pattern)):
+		continue
+	coincidences = [[] for _ in range(len(pattern))]
+	for towel in towels:
+		idx = 0
+		while True:
+			idx = pattern.find(towel, idx)
+			if idx < 0:
+				break
+			coincidences[idx].append({"towel": towel, "starts": idx, "ends": idx + len(towel)})
+			idx += 1
+
+	probs_per_len = [0 for _ in range(len(pattern) + 1)]
+	probs_per_len[len(pattern)] = 1
+	for idx in reversed(range(0, len(pattern))):
+		for towel in coincidences[idx]:
+			probs_per_len[idx] += probs_per_len[towel["ends"]]
+
+
+
+	result += probs_per_len[0]
 
 
 print(">>>", result)
